@@ -82,109 +82,63 @@
 		};
 	})();
 	
-	// Stringify function retained from Remy (https://github.com/remy/jsconsole)
 	var stringify = (function() {
-		function sortci(a, b) {
+		function sort(a, b) {
 			return a.toLowerCase() < b.toLowerCase() ? -1 : 1;
 		}
 		
-		// Custom to enable introspection of native browser objects *and* functions
-		function stringify(o, simple, visited) {
-			var json = '', i, vi, type = '', parts = [], names = [], circular = false;
-			visited = visited || [];
-			
-			try {
-				type = ({}).toString.call(o);
-			}
-			catch (ex) { // only happens when typeof is protected (...randomly)
-				type = '[object Object]';
-			}
+		function stringify(obj, visited) {
+			var i, prop, parts, names;
 			
 			// Check for circular references
-			for (vi = 0; vi < visited.length; vi++) {
-				if (o === visited[vi]) {
-					circular = true;
-					break;
+			for (i = 0; i < visited.length; i++) {
+				if (obj === visited[i]) {
+					return '[circular]';
 				}
 			}
 			
-			if (circular) {
-				json = '[circular]';
-			}
-			else if (type == '[object String]') {
-				json = '"' + o.replace(/"/g, '\\"') + '"';
-			}
-			else if (type == '[object Array]') {
-				visited.push(o);
-				
-				json = '[';
-				for (i = 0; i < o.length; i++) {
-					parts.push(stringify(o[i], simple, visited));
-				}
-				json += parts.join(', ') + ']';
-				json;
-			}
-			else if (type == '[object Object]') {
-				visited.push(o);
-				
-				json = '{';
-				for (i in o) {
-					names.push(i);
-				}
-				names.sort(sortci);
-				for (i = 0; i < names.length; i++) {
-					parts.push(stringify(names[i], undefined, visited) + ': ' + stringify(o[names[i]], simple, visited));
-				}
-				json += parts.join(', ') + '}';
-			}
-			else if (type == '[object Number]') {
-				json = o + '';
-			}
-			else if (type == '[object Boolean]') {
-				json = o ? 'true' : 'false';
-			}
-			else if (type == '[object Function]') {
-				json = o.toString();
-			}
-			else if (o === null) {
-				json = 'null';
-			}
-			else if (o === undefined) {
-				json = 'undefined';
-			}
-			else if (simple == undefined) {
-				visited.push(o);
-				
-				json = type + '{\n';
-				for (i in o) {
-					names.push(i);
-				}
-				names.sort(sortci);
-				for (i = 0; i < names.length; i++) {
-					try {
-						parts.push(names[i] + ': ' + stringify(o[names[i]], true, visited)); // safety from max stack
-					}
-					catch (ex) {
-						if (ex.name == 'NS_ERROR_NOT_IMPLEMENTED') {
-							// do nothing - not sure it's useful to show this error when the variable is protected
-							// parts.push(names[i] + ': NS_ERROR_NOT_IMPLEMENTED');
-						}
-					}
-				}
-				json += parts.join(',\n') + '\n}';
-			}
-			else {
-				try {
-					json = o + ''; // should look like an object
-				}
-				catch (ex) { }
+			if (typeof obj === 'string') {
+				return '"' + obj.replace(/"/g, '\\"') + '"';
 			}
 			
-			return json;
+			if (typeof obj === 'function') {
+				return obj.toString();
+			}
+			
+			if (Array.isArray(obj)) {
+				parts = [];
+				
+				for (i = 0; i < obj.length; i++) {
+					parts.push(stringify(obj[i], simple, visited));
+				}
+				
+				return '[' + parts.join(', ') + ']';
+			}
+			
+			if (typeof obj === 'object') {
+				names = [];
+				parts = [];
+				
+				visited.push(obj);
+				
+				for (prop in obj) {
+					names.push(prop);
+				}
+				
+				names.sort(sort);
+				
+				for (i = 0; i < names.length; i++) {
+					parts.push(stringify(names[i], visited) + ': ' + stringify(obj[names[i]], visited));
+				}
+				
+				return '{' + parts.join(', ') + '}';
+			}
+			
+			return obj + '';
 		}
 		
 		return function(str) {
-			return escapeHTML(stringify(str));
+			return escapeHTML(stringify(str, []));
 		}
 	})();
 	
