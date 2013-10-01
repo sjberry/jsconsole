@@ -109,7 +109,7 @@
 				parts = [];
 				
 				for (i = 0; i < obj.length; i++) {
-					parts.push(stringify(obj[i], simple, visited));
+					parts.push(stringify(obj[i], visited));
 				}
 				
 				return '[' + parts.join(', ') + ']';
