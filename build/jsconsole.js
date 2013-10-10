@@ -36,7 +36,6 @@
 			
 			if (e.which !== 16 && e.which !== 17 && e.which !== 18) {
 				combo = getKeyString(e);
-				//console.log(combo);
 				action = bindings[combo];
 				
 				if ($.isFunction(action)) {
