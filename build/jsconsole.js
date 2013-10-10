@@ -89,6 +89,11 @@
 		function stringify(obj, visited) {
 			var i, prop, parts, names, type;
 			
+			type = Object.prototype.toString.call(obj)
+			
+			if (type === '[object global]') {
+				return type;
+			}
 			// Check for circular references
 			for (i = 0; i < visited.length; i++) {
 				if (obj === visited[i]) {
