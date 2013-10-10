@@ -210,13 +210,16 @@
 		
 		help: (function() {
 			var helpFile = [
-				':help       -- Display help information.',
-				':load &lt;url&gt; -- Load external JS file.',
-				':clear      -- Clear the console.',
-				':purge      -- Clear command history.',
-				':reset      -- Clear all sandboxed variables.',
+				':help       &ndash; Display help information.',
+				':load &lt;url&gt; &ndash; Load external JS file.',
+				':clear      &ndash; Clear the console.',
+				':purge      &ndash; Clear command history.',
+				':reset      &ndash; Clear all sandboxed variables.',
 				'',
-				'CTRL + SHIFT + &uarr; -- Change console mode (single or multi-line).'
+				'~ &ndash; Toggle console visibility.',
+				'CTRL + SHIFT + &uarr; &ndash; Change console mode (single or multi-line).',
+				'ENTER &ndash; Run a single-line command.',
+				'CTRL + ENTER &ndash; Run a multi-line command.'
 				//'CTRL + ALT + T -- Toggle console translucency.'
 			];
 			
