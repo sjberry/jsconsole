@@ -1,3 +1,16 @@
+/**
+ * @license
+ * Copyright (C) 2013 Steven Berry (http://www.sberry.me/jsconsole)
+ * Licensed: MIT (http://opensource.org/licenses/mit-license.php)
+ * License Stipulations:
+ *     1) Retain this comment block.
+ *     2) Send me an email if you use this and have questions/comments!
+ * 
+ * Steven Berry
+ * www.sberry.me
+ * steven@sberry.me
+ */
+
 (function(window, $, undefined) {
 	var instance;
 	
