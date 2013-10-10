@@ -94,6 +94,11 @@
 			if (type === '[object global]') {
 				return type;
 			}
+			
+			if (obj === undefined || obj === null) {
+				return obj + '';
+			}
+			
 			// Check for circular references
 			for (i = 0; i < visited.length; i++) {
 				if (obj === visited[i]) {
