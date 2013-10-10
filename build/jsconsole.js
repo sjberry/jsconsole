@@ -87,7 +87,7 @@
 		}
 		
 		function stringify(obj, visited) {
-			var i, prop, parts, names;
+			var i, prop, parts, names, type;
 			
 			// Check for circular references
 			for (i = 0; i < visited.length; i++) {
@@ -173,7 +173,7 @@
 				
 				doc = this.frame.contentDocument || this.frame.contentWindow.document;
 				
-				for (var i = 1; i < arguments.length; i++) {
+				for (i = 1; i < arguments.length; i++) {
 					(function(consoleInst, url) {
 						var script = document.createElement('script');
 						script.src = url
