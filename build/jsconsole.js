@@ -111,7 +111,7 @@
 			}
 			
 			if (typeof obj === 'function') {
-				return obj.toString();
+				return '[object Function]';
 			}
 			
 			if (Array.isArray(obj)) {
