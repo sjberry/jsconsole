@@ -81,7 +81,7 @@
 #jsc-output li:last-child { border-style: none; }
 #jsc-output li:before {
 	position: absolute;
-	left: 3px; top: 5px;
+	left: 5px; top: 5px;
 	font-weight: bold;
 }
 #jsc-output li.jsc-echo:before {
