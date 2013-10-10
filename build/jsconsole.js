@@ -160,16 +160,14 @@
 		
 		reset: function(cmd) {
 			initSandbox.call(this);
-			this.info('Variables reset.');
 			
-			return this.echo(cmd);
+			return this.info('Variables reset.');
 		},
 		
 		purge: function(cmd) {
 			this.history.length = 0;
-			this.info('History cleared.');
 			
-			return this.echo(cmd);
+			return this.info('History cleared.');
 		},
 		
 		load: (function() {
@@ -204,7 +202,7 @@
 					})(this, libraries[arguments[i]] || arguments[i]);
 				}
 				
-				return this.echo(Array.prototype.join.call(arguments, ' '));
+				return this;
 			};
 		})(),
 		
@@ -224,9 +222,7 @@
 			];
 			
 			return function(cmd) {
-				this.info(helpFile.join('\n'));
-				
-				return this.echo(cmd);
+				return this.info(helpFile.join('\n'));
 			};
 		})()
 	};
@@ -311,6 +307,7 @@
 				fn = sysCommands[stripped];
 				
 				if ($.isFunction(fn)) {
+					this.echo(cmd);
 					fn.apply(this, args);
 				}
 				else {
@@ -319,8 +316,8 @@
 			}
 			else {
 				try {
-					this.response(cmd);
 					this.echo(cmd);
+					this.response(cmd);
 				}
 				catch (ex) {
 					this.error(ex.toString());
@@ -335,7 +332,10 @@
 		},
 		
 		post: function(output, type) {
-			$(this.output).prepend('<li class="jsc-' + type + '">' + output + '</li>').scrollTop(0);
+			var $output = $(this.output);
+			
+			$output.append('<li class="jsc-' + type + '">' + output + '</li>')
+				.scrollTop($output[0].scrollHeight);
 			
 			return this;
 		},
@@ -358,9 +358,9 @@
 			var count, text, $latest;
 			
 			text = stringify(obj);
-			$latest = $(this.output).find('li.jsc-log').first();
+			$latest = $(this.output).find('li.jsc-log').last();
 			
-			if ($latest.index() === 0 && escapeHTML($latest.text()) === text) {
+			if ($latest.is(':last-child') && escapeHTML($latest.text()) === text) {
 				count = parseInt($latest.attr('data-count'));
 				$latest.attr('data-count', $.isNumeric(count) ? count + 1 : 2);
 			}
